@@ -31,7 +31,7 @@ namespace Authentication_and_Authorization.Controllers
             var user = _mapper.Map<User>(newUser);
             //hash password
             user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
-            user.Role = "Admin";
+           // user.Role = "Admin";
             var res = await _userInterface.RegisterUser(user);
             return Ok(res);
         }

@@ -26,6 +26,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //authentication
 builder.AddAppAuthentication();
 
+//Adding Authorization options
+
+builder.addAuthorizationExtension();
+
+builder.AddSwaggenGenExtension();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,20 +48,10 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
-
-ApplyMigration();
-app.Run();
 //Migration
 //check if there any pending migrations
 //add to database(update-database)
-void ApplyMigration()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var _db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        if (_db.Database.GetPendingMigrations().Count() > 0)
-        {
-            _db.Database.Migrate();
-        }
-    }
-}
+app.ApplyMigration();
+app.Run();
+
+
